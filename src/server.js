@@ -4,6 +4,7 @@ import { db } from "./config/db.js";
 import { ENV } from "./config/env.js";
 import { favoritesTable } from "./db/schema.js";
 import { eq } from "drizzle-orm";
+import job from "./config/cron.js";
 
 const app = express();
 
@@ -11,6 +12,8 @@ app.use(express.json());
 app.use(cors());
 
 const PORT = ENV.PORT || 5001;
+
+if(ENV.NODE_ENV==="production") job.start()
 
 app.post("/api/favorites", async (req, res) => {
   try {
